@@ -22,7 +22,7 @@ public class Point {
 
   }
 
-  public void setY(int x) {
+  public void setY(int y) {
     this.y = y;
 
   }
