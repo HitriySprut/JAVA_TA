@@ -14,3 +14,12 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 .idea/workspace.xml
 .idea/kotlinc.xml
+
+
+gradle-4.7-all.zip
+gradle-4.7-all/
+sandbox/.idea/
+sandbox/gradle.properties
+sandbox/out/
+sandbox/src/main/main.iml
+sandbox/src/test/test.iml
