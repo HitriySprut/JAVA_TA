@@ -24,3 +24,4 @@ sandbox/out/
 sandbox/src/main/main.iml
 sandbox/src/test/test.iml
 sandbox/sandbox.iml
+addressbook-web-tests/addressbook-web-tests.iml
