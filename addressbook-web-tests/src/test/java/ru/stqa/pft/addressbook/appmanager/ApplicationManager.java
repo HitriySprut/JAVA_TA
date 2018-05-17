@@ -7,8 +7,9 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
+    FirefoxDriver wd;
 
-    private final SessionHelper sessionHelper = new SessionHelper();
+    private SessionHelper sessionHelper;
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
 
@@ -22,16 +23,17 @@ public class ApplicationManager {
     }
 
     public void init() {
-        sessionHelper.wd = new FirefoxDriver(new FirefoxOptions().setLegacy(true));
-        sessionHelper.wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-        sessionHelper.wd.get("http://localhost/addressbook/group.php");
-        groupHelper = new GroupHelper(sessionHelper.wd);
-        navigationHelper = new NavigationHelper(sessionHelper.wd);
+        wd = new FirefoxDriver(new FirefoxOptions().setLegacy(true));
+        wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        wd.get("http://localhost/addressbook/group.php");
+        groupHelper = new GroupHelper(wd);
+        navigationHelper = new NavigationHelper(wd);
+        sessionHelper = new SessionHelper(wd);
         sessionHelper.login("admin", "secret");
     }
 
     public void stop() {
-        sessionHelper.wd.quit();
+        wd.quit();
     }
 
     public GroupHelper getGroupHelper() {
