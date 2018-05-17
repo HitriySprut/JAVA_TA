@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.*;
 
-public class testGroupCreation {
+public class GroupCreationTests {
     FirefoxDriver wd;
     
     @BeforeMethod
@@ -32,7 +32,7 @@ public class testGroupCreation {
   }
 
   @Test
-    public void GroupCreationTests() {
+    public void testGroupCreation() {
 
         gotoGroupPage();
         initGroupCreation();
