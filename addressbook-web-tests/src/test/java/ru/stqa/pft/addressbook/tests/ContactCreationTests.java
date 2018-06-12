@@ -9,6 +9,7 @@ public class ContactCreationTests extends TestBase {
     public void testContactCreation() {
 
         app.getContactHelper().createContact(new ContactData("Gena1", "Krokodil1", "gena_s_avtogenom@fairy.ft", "someGroup"));
+      app.getContactHelper().submitContactsDeletion();
 
     }
 
