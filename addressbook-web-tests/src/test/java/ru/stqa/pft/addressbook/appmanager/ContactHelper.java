@@ -46,16 +46,17 @@ public class ContactHelper extends HelperBase {
     }
 
     public void initContactModification() {
-        click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+        //click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+        click(By.cssSelector("#maintable tr:last-child img[title='Edit']"));
     }
 
     public void submitContactModification() {
         click(By.name("update"));
     }
 
-    public void selectContacts() {
+    public void selectContacts(int index) {
         {
-            click(By.name("selected[]"));
+            click(By.cssSelector("#maintable tr:last-child input[id='"+index+"']"));
 
         }
     }
@@ -86,7 +87,7 @@ public class ContactHelper extends HelperBase {
             String lastname = element.findElement(By.cssSelector("td:nth-child(2)")).getText();
             String firstname = element.findElement(By.cssSelector("td:nth-child(3)")).getText();
             String email = element.findElement(By.cssSelector("td:nth-child(5)")).getText();
-            String id = element.findElement(By.cssSelector("td input")).getAttribute("id");
+            int id = Integer.parseInt(element.findElement(By.cssSelector("td input")).getAttribute("id"));
             ContactData contact = new ContactData(id,firstname,lastname,email,null);
             contacts.add(contact);
 
