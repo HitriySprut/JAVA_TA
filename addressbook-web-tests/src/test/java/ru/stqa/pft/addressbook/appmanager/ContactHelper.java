@@ -45,9 +45,10 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
-    public void initContactModification() {
+    public void initContactModification(int index) {
         //click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
-        click(By.cssSelector("#maintable tr:last-child img[title='Edit']"));
+        //click(By.cssSelector("#maintable tr a[href='edit.php?id="+index+"'] img"));
+        wd.findElements(By.cssSelector("#maintable tr img[title='Edit']")).get(index).click();
     }
 
     public void submitContactModification() {
@@ -56,11 +57,20 @@ public class ContactHelper extends HelperBase {
 
     public void selectContacts(int index) {
         {
-            click(By.cssSelector("#maintable tr:last-child input[id='"+index+"']"));
-
+            wd.findElements(By.cssSelector("#maintable tr input")).get(index).click();
         }
     }
-
+    public void modify(ContactData modifiedContact, int index) {
+        initContactModification(index);
+        fillContactForm(modifiedContact, false);
+        submitContactModification();
+        returnToHomepage();
+    }
+    public void delete(int index) {
+        selectContacts(index);
+        deleteSelectedContacts();
+        submitContactsDeletion();
+    }
     public void deleteSelectedContacts() {
         click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
     }
@@ -69,7 +79,7 @@ public class ContactHelper extends HelperBase {
         acceptDialogueWindow();
     }
 
-    public void createContact(ContactData contactData) {
+    public void create(ContactData contactData) {
         initContactCreation();
         fillContactForm(contactData, true);
         submitContactCreation();
@@ -80,7 +90,7 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public List<ContactData> getContactList() {
+    public List<ContactData> list() {
         List<ContactData> contacts = new ArrayList<>();
         List<WebElement> elements = wd.findElements(By.cssSelector("tr[name=entry]"));
         for (WebElement element : elements) {
@@ -88,7 +98,7 @@ public class ContactHelper extends HelperBase {
             String firstname = element.findElement(By.cssSelector("td:nth-child(3)")).getText();
             String email = element.findElement(By.cssSelector("td:nth-child(5)")).getText();
             int id = Integer.parseInt(element.findElement(By.cssSelector("td input")).getAttribute("id"));
-            ContactData contact = new ContactData(id,firstname,lastname,email,null);
+            ContactData contact = new ContactData().withId(id).withFirstname(firstname).withLastname(lastname).withEmail(email);
             contacts.add(contact);
 
         }
