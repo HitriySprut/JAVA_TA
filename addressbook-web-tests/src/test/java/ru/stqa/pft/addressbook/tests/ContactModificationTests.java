@@ -5,8 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by admin on 18.05.2018.
@@ -16,28 +15,30 @@ public class ContactModificationTests extends TestBase {
   @BeforeMethod
   public void ensurePreconditions() {
     //check if no create exists
-    if (app.contact().list().size()==0)
+    if (app.contact().all().size()==0)
       app.contact().create(new ContactData().withFirstname("Gena").withLastname("Krokodilov").withEmail("gena@gmail.com").withGroup("someGroup"));
   }
   @Test
   public void testContactModification() {
 
-    //list of contacts before modification
-    List<ContactData> before = app.contact().list();
+    //all of contacts before modification
+    Set<ContactData> before = app.contact().all();
 
     //modification
-    int index =before.size() - 1;
-    ContactData modifiedContact = new ContactData().withId(before.get(index).getId()).withFirstname("Gena").withLastname("Krokodilov").withEmail("gena@gmail.com");
-    app.contact().modify(modifiedContact,index);
+    //int index =before.size() - 1;
+    ContactData modifiedContact = before.iterator().next();
+    ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstname("Gena").withLastname("Krokodilov").withEmail("gena@gmail.com");
+    app.contact().modify(contact);
 
-    //list of contacts bafter modification
-    List<ContactData> after = app.contact().list();
+    //all of contacts bafter modification
+    Set<ContactData> after = app.contact().all();
 
-    before.remove(index);
-    before.add(modifiedContact);
-    Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
+    before.remove(modifiedContact);
+    before.add(contact);
+    /*Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
     before.sort(byId);
     after.sort(byId);
+    */
     Assert.assertEquals(before, after);
 
 
