@@ -1,14 +1,9 @@
 package ru.stqa.pft.addressbook.tests;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.junit.MatcherAssert;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
-
-import java.util.*;
-import java.util.regex.Matcher;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.junit.MatcherAssert.*;
@@ -26,6 +21,20 @@ public class GroupCreationTests extends TestBase {
     Groups after = app.group().all();
 
     Assert.assertEquals(after.size(), before.size() + 1);
+    assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt(g->g.getId()).max().getAsInt()))));
+
+  }
+
+  @Test
+  public void testBadGroupCreation() {
+
+    app.gotoGroupPage();
+
+    Groups before = app.group().all();
+    GroupData group = new GroupData().withName("Test'").withHeader("Test3").withFooter("Test4");
+    app.group().create(group);
+    assertThat(app.group().count(),equalTo(before.size()+1));
+    Groups after = app.group().all();
     assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt(g->g.getId()).max().getAsInt()))));
 
   }
