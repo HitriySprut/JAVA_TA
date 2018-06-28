@@ -8,6 +8,9 @@ import ru.stqa.pft.addressbook.model.Contacts;
 
 import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.junit.MatcherAssert.assertThat;
+
 /**
  * Created by admin on 18.05.2018.
  */
@@ -29,7 +32,7 @@ public class ContactModificationTests extends TestBase {
     app.contact().modify(contact);
     Contacts after = app.contact().all();
 
-    Assert.assertEquals(after, before.without(modifiedContact).withAdded(contact));
+    assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
 
 
   }
