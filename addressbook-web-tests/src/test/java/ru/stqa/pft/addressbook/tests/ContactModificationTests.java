@@ -17,7 +17,7 @@ public class ContactModificationTests extends TestBase {
   public void ensurePreconditions() {
     //check if no create exists
     if (app.contact().all().size()==0)
-      app.contact().create(new ContactData().withFirstname("Gena").withLastname("Krokodilov").withEmail("gena@gmail.com").withGroup("someGroup"));
+      app.contact().create(new ContactData().withFirstname("Gena3").withLastname("Krokodilov3").withEmail("gena@gmail.com").withGroup("someGroup"));
   }
   @Test
   public void testContactModification() {
@@ -29,7 +29,7 @@ public class ContactModificationTests extends TestBase {
     app.contact().modify(contact);
     Contacts after = app.contact().all();
 
-    Assert.assertEquals(before, after.without(modifiedContact).withAdded(contact));
+    Assert.assertEquals(after, before.without(modifiedContact).withAdded(contact));
 
 
   }

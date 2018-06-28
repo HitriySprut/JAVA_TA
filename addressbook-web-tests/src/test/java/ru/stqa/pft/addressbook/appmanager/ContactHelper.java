@@ -48,34 +48,18 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
-    public void initContactModification(int index) {
-        //click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
-        //click(By.cssSelector("#maintable tr a[href='edit.php?id="+index+"'] img"));
-        wd.findElements(By.cssSelector("#maintable tr img[title='Edit']")).get(index).click();
-    }
-
     public void submitContactModification() {
         click(By.name("update"));
     }
 
-    public void selectContacts(int index) {
-        {
-            wd.findElements(By.cssSelector("#maintable tr input")).get(index).click();
-        }
-    }
   private void selectContactsById(int id) {
     wd.findElement(By.cssSelector("#maintable tr input[id='"+id+"']")).click();
   }
-    public void modify(ContactData contact, int index) {
-        initContactModification(index);
-        fillContactForm(contact, false);
-        submitContactModification();
-        returnToHomepage();
-    }
   public void modify(ContactData contact) {
     initContactModificationById(contact.getId());
     fillContactForm(contact, false);
     submitContactModification();
+    contactCache=null;
     returnToHomepage();
   }
 
@@ -83,15 +67,19 @@ public class ContactHelper extends HelperBase {
     click(By.cssSelector("#maintable tr a[href='edit.php?id="+id+"'] img"));
   }
 
-  public void delete(int index) {
-        selectContacts(index);
-        deleteSelectedContacts();
-        submitContactsDeletion();
-    }
   public void delete(ContactData contact) {
     selectContactsById(contact.getId());
     deleteSelectedContacts();
+    contactCache=null;
     submitContactsDeletion();
+  }
+
+  public void create(ContactData contactData) {
+    initContactCreation();
+    fillContactForm(contactData, true);
+    submitContactCreation();
+    contactCache=null;
+    returnToHomepage();
   }
 
   public void deleteSelectedContacts() {
@@ -102,19 +90,13 @@ public class ContactHelper extends HelperBase {
         acceptDialogueWindow();
     }
 
-    public void create(ContactData contactData) {
-        initContactCreation();
-        fillContactForm(contactData, true);
-        submitContactCreation();
-        returnToHomepage();
-    }
 
-    public boolean isThereAContact() {
-        return isElementPresent(By.name("selected[]"));
-    }
+  private Contacts contactCache=null;
 
     public Contacts all() {
-        Contacts contacts = new Contacts();
+      if(contactCache!=null) return new Contacts(contactCache);
+
+        contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.cssSelector("tr[name=entry]"));
         for (WebElement element : elements) {
             String lastname = element.findElement(By.cssSelector("td:nth-child(2)")).getText();
@@ -122,10 +104,10 @@ public class ContactHelper extends HelperBase {
             String email = element.findElement(By.cssSelector("td:nth-child(5)")).getText();
             int id = Integer.parseInt(element.findElement(By.cssSelector("td input")).getAttribute("id"));
             ContactData contact = new ContactData().withId(id).withFirstname(firstname).withLastname(lastname).withEmail(email);
-            contacts.add(contact);
+            contactCache.add(contact);
 
         }
-    return contacts;
+    return new Contacts(contactCache);
     }
 
 
