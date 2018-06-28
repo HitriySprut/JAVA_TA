@@ -4,6 +4,8 @@ public class ContactData {
   private String firstname;
   private String lastname;
   private String email;
+  private String email2;
+  private String email3;
   private String nickname;
   private String company;
   private String mobile;
@@ -11,6 +13,44 @@ public class ContactData {
   private String work;
   private String group;
   private int id = Integer.MAX_VALUE;
+  private String allPhones;
+
+  public String getAddress() {
+    return address;
+  }
+
+  public ContactData withAddress(String address) {
+    this.address = address;
+    return this;
+  }
+
+  private String address;
+
+  public void setAllEmails(String allEmails) {
+    this.allEmails = allEmails;
+  }
+
+  public String getAllEmails() {
+    return allEmails;
+  }
+
+  public ContactData withAllEmails(String allEmails) {
+    this.allEmails = allEmails;
+    return this;
+  }
+
+  private String allEmails;
+
+  public String getAllPhones() {
+    return allPhones;
+  }
+
+  public ContactData withAllPhones(String allPhones) {
+    this.allPhones = allPhones;
+    return this;
+  }
+
+
 
   public String getFirstname() {
     return firstname;
@@ -48,9 +88,28 @@ public class ContactData {
     return homePhone;
   }
 
-  public String getWork() {
+  public String getWorkPhone() {
     return work;
   }
+
+  public String getEmail2() {
+    return email2;
+  }
+
+  public ContactData withEmail2(String email2) {
+    this.email2 = email2;
+    return this;
+  }
+
+  public String getEmail3() {
+    return email3;
+  }
+
+  public ContactData withEmail3(String email3) {
+    this.email3 = email3;
+    return this;
+  }
+
 
   public ContactData withHomePhone(String homePhone) {
     this.homePhone = homePhone;
@@ -98,7 +157,7 @@ public class ContactData {
     return this;
   }
 
-  public ContactData withEmail(String email) {
+  public ContactData withEmail1(String email) {
     this.email = email;
     return this;
   }
