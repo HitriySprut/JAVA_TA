@@ -23,6 +23,7 @@ public class ApplicationManager {
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
     private ContactHelper contactHelper;
+    private DBhelper dbHelper;
 
     public ApplicationManager(String browser)  {
         this.browser=browser;
@@ -32,6 +33,7 @@ public class ApplicationManager {
     public void init() throws IOException {
         String target = System.getProperty("target","local");
         properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties",target))));
+        dbHelper = new DBhelper();
         if(browser.equals(BrowserType.CHROME))
         {//System.setProperty("webdriver.chrome.driver", "C:\\Users\\kseliumi\\IdeaProjects\\SKSES tests\\src\\main\\resources\\drivers\\chromedriver.exe");
             //System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
@@ -71,6 +73,7 @@ public class ApplicationManager {
     public ContactHelper contact() {
         return contactHelper;
     }
+    public DBhelper db(){return dbHelper;}
 
 
 }
