@@ -14,35 +14,69 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
-    private final String browser;
-    private final Properties properties;
-    WebDriver wd;
+  private final String browser;
+  private final Properties properties;
+  private WebDriver wd;
+  private RegistrationHelper registrationHelper;
+  private FTPHelper ftp;
+  private MailHelper mailHelper;
 
 
-    public ApplicationManager(String browser)  {
-        this.browser=browser;
-        properties = new Properties();
+  public ApplicationManager(String browser) {
+    this.browser = browser;
+    properties = new Properties();
+  }
+
+  public void init() throws IOException {
+    String target = System.getProperty("target", "local");
+    properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+
+  }
+
+  public void stop() {
+    if (wd != null)
+      wd.quit();
+  }
+
+  public HttpSession newSession() {
+    return new HttpSession(this);
+  }
+
+
+  public String getProperty(String key) {
+    return properties.getProperty(key);
+  }
+
+  public RegistrationHelper registration() {
+    if (registrationHelper == null)
+      registrationHelper = new RegistrationHelper(this);
+    return registrationHelper;
+  }
+  public FTPHelper ftp(){if(ftp==null)
+    ftp= new FTPHelper(this);
+  return ftp;
+
+  }
+
+  public WebDriver getDriver() {
+    if (wd == null) {
+      if (browser.equals(BrowserType.CHROME)) {//System.setProperty("webdriver.chrome.driver", "C:\\Users\\kseliumi\\IdeaProjects\\SKSES tests\\src\\main\\resources\\drivers\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+        wd = new ChromeDriver();
+      } else if (browser.equals(BrowserType.FIREFOX)) wd = new FirefoxDriver(new FirefoxOptions().setLegacy(true));
+      else if (browser.equals(BrowserType.IE)) wd = new InternetExplorerDriver();
+
+      wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+      wd.get(properties.getProperty("web.baseUrl"));
+
     }
-
-    public void init() throws IOException {
-        String target = System.getProperty("target","local");
-        properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties",target))));
-
-        if(browser.equals(BrowserType.CHROME))
-        {//System.setProperty("webdriver.chrome.driver", "C:\\Users\\kseliumi\\IdeaProjects\\SKSES tests\\src\\main\\resources\\drivers\\chromedriver.exe");
-            //System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
-        wd=new ChromeDriver();}
-        else if (browser.equals(BrowserType.FIREFOX) ) wd = new FirefoxDriver(new FirefoxOptions().setLegacy(true));
-        else if (browser.equals(BrowserType.IE))wd = new InternetExplorerDriver();
-
-        wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        wd.get(properties.getProperty("web.baseUrl"));
+    return wd;
+  }
+  public MailHelper mail(){
+    if (mailHelper==null){
+      mailHelper= new MailHelper(this);
     }
-
-    public void stop() {
-        wd.quit();
-    }
-
-
+    return mailHelper;
+  }
 
 }
