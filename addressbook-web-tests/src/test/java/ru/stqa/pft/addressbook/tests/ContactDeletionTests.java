@@ -22,7 +22,7 @@ public class ContactDeletionTests extends TestBase {
 
     //check if no create exists
     if (app.db().contacts().size()==0)
-      app.contact().create(new ContactData().withFirstname("Gena2").withLastname("Krokodilov2").withEmail1("gena2@gmail.com").withGroup("someGroup").withPhoto(new File("src/test/resources/image.jpg")));;
+      app.contact().create(new ContactData().withFirstname("Gena2").withLastname("Krokodilov2").withEmail1("gena2@gmail.com")/*.withGroup("someGroup")*/.withPhoto(new File("src/test/resources/image.jpg")));;
 
   }
 
@@ -37,6 +37,7 @@ public class ContactDeletionTests extends TestBase {
     assertThat(app.contact().count(),equalTo(before.size()-1));
     Contacts after = app.db().contacts();
     assertThat(after, equalTo(before.without(deletedContact)));
+    verifyContactListInUI();
   }
 
 
