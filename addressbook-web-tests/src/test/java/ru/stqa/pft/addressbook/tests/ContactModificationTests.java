@@ -30,12 +30,12 @@ public class ContactModificationTests extends TestBase {
   public void testContactModification() {
 
 
-    Contacts before = app.contact().all();
+    Contacts before = app.db().contacts();
     ContactData modifiedContact = before.iterator().next();
     ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstname("Gena").withLastname("Krokodilov").withEmail1("gena@gmail.com").withPhoto(new File("src/test/resources/image.jpg"));
     app.contact().modify(contact);
     assertThat(app.contact().count(),equalTo(before.size()));
-    Contacts after = app.contact().all();
+    Contacts after = app.db().contacts();
     assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
 
 

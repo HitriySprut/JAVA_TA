@@ -44,7 +44,11 @@ public class ContactData {
   private String allPhones;
 
   public File getPhoto() {
+    if(photo==null){
+      return null;
+    }
     return new File(photo);
+
   }
 
   public ContactData withPhoto(File photo) {

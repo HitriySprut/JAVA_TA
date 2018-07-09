@@ -35,7 +35,7 @@ public class ApplicationManager {
         properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties",target))));
         dbHelper = new DBhelper();
         if(browser.equals(BrowserType.CHROME))
-        {//System.setProperty("webdriver.chrome.driver", "C:\\Users\\kseliumi\\IdeaProjects\\SKSES tests\\src\\main\\resources\\drivers\\chromedriver.exe");
+        {System.setProperty("webdriver.chrome.driver", "C:\\Users\\kseliumi\\IdeaProjects\\SKSES tests\\src\\main\\resources\\drivers\\chromedriver.exe");
             //System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
         wd=new ChromeDriver();}
         else if (browser.equals(BrowserType.FIREFOX) ) wd = new FirefoxDriver(new FirefoxOptions().setLegacy(true));
