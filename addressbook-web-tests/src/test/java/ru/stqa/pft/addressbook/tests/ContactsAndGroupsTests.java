@@ -43,7 +43,7 @@ public class ContactsAndGroupsTests extends TestBase {
 
         ContactData contact = findContactWithGroup();
         GroupData group = contact.getGroups().iterator().next();
-        app.contact().deleteContactFromGroup(group);
+        app.contact().deleteContactFromGroup(contact,group);
         app.goTo().HomePage();
         ContactData contactFromDB = app.db().contact(contact.getId());
         assertFalse(contactFromDB.getGroups().contains(group));

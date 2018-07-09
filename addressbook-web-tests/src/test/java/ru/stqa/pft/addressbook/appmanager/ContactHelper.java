@@ -212,9 +212,9 @@ public class ContactHelper extends HelperBase {
 
     }
 
-    public void deleteContactFromGroup(GroupData group) {
+    public void deleteContactFromGroup(ContactData contact, GroupData group) {
         filterByGroup(group);
-        click(By.cssSelector("input[name='selected[]']"));
+        click(By.cssSelector(String.format("input[id='%s']",contact.getId())));
         click(By.cssSelector("input[name='remove']"));
 
     }
