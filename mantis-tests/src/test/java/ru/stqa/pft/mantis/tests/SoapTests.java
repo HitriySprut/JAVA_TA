@@ -4,6 +4,7 @@ import biz.futureware.mantis.rpc.soap.client.MantisConnectLocator;
 import biz.futureware.mantis.rpc.soap.client.MantisConnectPortType;
 import biz.futureware.mantis.rpc.soap.client.ProjectData;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.mantis.TestBase;
 import ru.stqa.pft.mantis.model.Issue;
@@ -21,9 +22,15 @@ import static org.testng.Assert.assertEquals;
  * Created by admin on 11.07.2018.
  */
 public class SoapTests extends TestBase{
+  @BeforeMethod
+  public void checkIfFixed() throws RemoteException, ServiceException, MalformedURLException {
+    skipIfNotFixed(1);
+
+  }
 
   @Test
   public void testGetProjects() throws MalformedURLException, ServiceException, RemoteException {
+
     Set<Project> projects = app.soap().getProjects();
     System.out.println(projects.size());
     for(Project project:projects){
@@ -32,6 +39,7 @@ public class SoapTests extends TestBase{
   }
   @Test
   public void testCreateIssue() throws RemoteException, ServiceException, MalformedURLException {
+
     Set<Project> projects = app.soap().getProjects();
     Issue issue = new Issue().withSummary("Test issue")
             .withDescription("Desc").withProject(projects.iterator().next());
