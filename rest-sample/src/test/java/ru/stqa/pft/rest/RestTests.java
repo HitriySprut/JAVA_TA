@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static org.testng.Assert.assertEquals;
 
-public class RestTests {
+public class RestTests extends TestBase {
 
   @Test
 
@@ -50,21 +50,7 @@ public class RestTests {
     return parsed.getAsJsonObject().get("issue_id").getAsInt();
   }
 
-  private Executor getExecutor() {
-    return Executor.newInstance().auth("288f44776e7bec4bf44fdfeb1e646490", "");
-  }
 
-  private void skipIfNotFixed(int issueId) throws IOException {
-    if (isIssueOpen(issueId)) throw new SkipException("Ignored because of issue " + issueId);
-  }
 
-  private boolean isIssueOpen(int issueId) throws IOException {
-
-    String json = getExecutor().execute(Request.Get("http://bugify.stqa.ru/api/issues/"+ issueId + ".json" )).returnContent().asString();
-    JsonElement issue =new JsonParser().parse(json) .getAsJsonObject().get("issues").getAsJsonArray().get(0);
-    String status = issue.getAsJsonObject().get("state_name").getAsString();
-    if (status.equals("Closed")) { return false; }
-    return true;
-  }
 
 }
