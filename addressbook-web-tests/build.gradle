@@ -44,3 +44,8 @@ task testContacts(type: Test) {
         systemProperty 'verifyUI', "${verifyUI}"
     }
 }
+compileJava {
+    options.fork = true
+    options.forkOptions.executable = 'C:\\\\Program Files\\\\Java\\\\jdk1.8.0_171'
+}
+
