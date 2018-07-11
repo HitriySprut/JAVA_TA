@@ -9,6 +9,7 @@ import org.apache.http.client.fluent.Executor;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class RestTests {
   @Test
 
   public void testCreateIssue() throws IOException {
+    skipIfNotFixed(12);
+
     Set<Issue> oldIssues = getIssues();
     Issue newIssue = new Issue().withSubject("Test issue").withDescription("Tew test issue").withState("0");
     int issueId = createIssue(newIssue);
@@ -49,6 +52,19 @@ public class RestTests {
 
   private Executor getExecutor() {
     return Executor.newInstance().auth("288f44776e7bec4bf44fdfeb1e646490", "");
+  }
+
+  private void skipIfNotFixed(int issueId) throws IOException {
+    if (isIssueOpen(issueId)) throw new SkipException("Ignored because of issue " + issueId);
+  }
+
+  private boolean isIssueOpen(int issueId) throws IOException {
+
+    String json = getExecutor().execute(Request.Get("http://bugify.stqa.ru/api/issues/"+ issueId + ".json" )).returnContent().asString();
+    JsonElement issue =new JsonParser().parse(json) .getAsJsonObject().get("issues").getAsJsonArray().get(0);
+    String status = issue.getAsJsonObject().get("state_name").getAsString();
+    if (status.equals("Closed")) { return false; }
+    return true;
   }
 
 }
